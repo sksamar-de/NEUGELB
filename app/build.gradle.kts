@@ -63,6 +63,8 @@ dependencies {
     //nav
     implementation(libs.androidx.navigation.compose)
 
+    implementation(project(":movies:movies_data"))
+    implementation(project(":movies:movies_domain"))
     implementation(project(":movies:movies_presentation"))
     implementation(project(":search:search_presentation"))
     implementation(project(":common:common_utls"))
