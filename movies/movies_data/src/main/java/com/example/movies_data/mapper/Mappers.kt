@@ -10,7 +10,7 @@ fun MoviesResponse.toMovies(): Movies {
         page = page,
         total_pages = total_pages,
         total_results = total_results,
-        results = results.map { it.toMovie() }
+        results = results?.map { it?.toMovie() }?: emptyList()
     )
 }
 
