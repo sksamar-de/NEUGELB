@@ -38,7 +38,7 @@ class DetailViewModel @Inject constructor(
                 is Resource.Success<Detail> -> {
                     _state = DetailState(detail = it.result)
                 }
-                is Resource.Error<*> -> {
+                is Resource.Error -> {
                     _state = DetailState(error = it.message)
                 }
             }

@@ -36,7 +36,7 @@ class SearchViewModel
                 is Resource.Success -> {
                     _state.value = SearchState(searchList = it.result, error = if (it.result.isEmpty()) "$search not found." else "")
                 }
-                is Resource.Error<*> -> {
+                is Resource.Error -> {
                     _state.value = SearchState(error = it.message)
                 }
             }

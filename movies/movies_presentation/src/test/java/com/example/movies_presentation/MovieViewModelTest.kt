@@ -77,7 +77,7 @@ class MovieViewModelTest {
         val errorMessage = "Error message"
         every { useCase.invoke(1) } returns flow {
             emit(Resource.Loading)
-            emit(Resource.Error<Movies>(errorMessage))
+            emit(Resource.Error(errorMessage))
         }
         val viewModel = MovieViewModel(useCase)
         assertFalse(viewModel.currentState.isLoading)

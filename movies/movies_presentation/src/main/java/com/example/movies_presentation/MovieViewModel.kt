@@ -29,6 +29,7 @@ class MovieViewModel @Inject constructor(private val useCase: GetMoviesUseCase) 
     }
 
     fun getNextMovies() {
+        val oldState = _currentState.copy()
         useCase.invoke(page = currentState.currentPage + 1).onEach {
             when (it) {
                 Resource.Loading -> {
@@ -43,8 +44,8 @@ class MovieViewModel @Inject constructor(private val useCase: GetMoviesUseCase) 
                     )
                 }
 
-                is Resource.Error<*> -> {
-                    _currentState = MoviesState(isLoadingMore = false, error = it.message)
+                is Resource.Error -> {
+                    _currentState = oldState.copy(isLoadingMore = false, error = it.message)
                 }
             }
         }.launchIn(viewModelScope)
@@ -66,7 +67,7 @@ class MovieViewModel @Inject constructor(private val useCase: GetMoviesUseCase) 
                     )
                 }
 
-                is Resource.Error<*> -> {
+                is Resource.Error -> {
                     _currentState = MoviesState(isLoading = false, error = it.message)
                 }
             }
