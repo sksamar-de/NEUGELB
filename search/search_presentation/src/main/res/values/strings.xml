@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="search_icon">search_icon</string>
+    <string name="search_movies">Search Movies</string>
+    <string name="start_looking_for_your_favourite_movie">Start Looking for your favourite movie.</string>
+    <string name="search">Search</string>
+    <string name="dot">.</string>
+    <string name="nav_back_icon">nav_back_icon</string>
+</resources>

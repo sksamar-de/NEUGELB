@@ -72,6 +72,8 @@ dependencies {
     implementation(project(":details:details_domain"))
     implementation(project(":details:details_presentation"))
 
+    implementation(project(":search:search_data"))
+    implementation(project(":search:search_domain"))
     implementation(project(":search:search_presentation"))
     implementation(project(":common:common_utls"))
 }

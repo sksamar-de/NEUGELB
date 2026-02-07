@@ -26,10 +26,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.example.common_utls.Assent
 import com.example.common_utls.LocalNavHostController
 import com.example.details_presentation.components.Details
 
-val Assent = Color(0xFFFFC700)
 
 @Composable
 fun DetailScreen(
