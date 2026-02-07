@@ -23,6 +23,7 @@ fun MovieDto.toMovie(): Movie {
         poster_path = poster_path,
         release_date = release_date,
         vote_average = vote_average,
-        backdrop_path = backdrop_path
+        backdrop_path = backdrop_path,
+        popularity = popularity
     )
 }

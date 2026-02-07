@@ -16,4 +16,5 @@ data class Movie(
     val title: String?,
     val overview: String?,
     val vote_average: Double?,
+    val popularity: Double?,
 )

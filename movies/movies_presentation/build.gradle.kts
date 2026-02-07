@@ -51,7 +51,11 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
 
     implementation(project(":common:common_utls"))
-    implementation(project(":search:search_domain"))
+    implementation(project(":movies:movies_domain"))
+
+    // coil
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
 
     //hilt
     implementation(libs.hilt.android)

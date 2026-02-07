@@ -30,7 +30,6 @@ fun Languages(detail: Detail) {
             style = MaterialTheme.typography.bodySmall.copy(
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color.White,
             )
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -45,7 +44,8 @@ fun Languages(detail: Detail) {
                         brush = Brush.verticalGradient(
                             colors = listOf(
                                 Color.Transparent,
-                                Color.Black
+                                MaterialTheme.colorScheme.onSurface
+
                             )
                         )
                     ),
@@ -54,7 +54,7 @@ fun Languages(detail: Detail) {
                 Text(
                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                     text = language?.english_name ?: language?.name ?: "N/A",
-                    style = MaterialTheme.typography.titleSmall.copy(fontSize = 13.sp, color = Color.White),
+                    style = MaterialTheme.typography.titleSmall.copy(fontSize = 13.sp),
                     maxLines = 6,
                     overflow = TextOverflow.Ellipsis
                 )

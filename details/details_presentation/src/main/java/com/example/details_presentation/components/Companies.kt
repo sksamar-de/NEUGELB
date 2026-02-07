@@ -30,7 +30,6 @@ fun Companies(detail: Detail) {
             style = MaterialTheme.typography.bodySmall.copy(
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color.White,
             )
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -45,7 +44,7 @@ fun Companies(detail: Detail) {
                         brush = Brush.verticalGradient(
                             colors = listOf(
                                 Color.Transparent,
-                                Color.Black
+                                MaterialTheme.colorScheme.onSurface
                             )
                         )
                     ),
@@ -65,7 +64,7 @@ fun Companies(detail: Detail) {
                 Text(
                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                     text = company?.name ?: "N/A",
-                    style = MaterialTheme.typography.titleSmall.copy(fontSize = 13.sp, color = Color.White),
+                    style = MaterialTheme.typography.titleSmall.copy(fontSize = 13.sp),
                     maxLines = 6,
                     overflow = TextOverflow.Ellipsis
                 )

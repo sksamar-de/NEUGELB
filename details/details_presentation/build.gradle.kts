@@ -53,6 +53,13 @@ dependencies {
     implementation(project(":common:common_utls"))
     implementation(project(":details:details_domain"))
 
+    //ratingbar
+    implementation(libs.compose.ratingbar)
+
+    // coil
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
+
     //hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)

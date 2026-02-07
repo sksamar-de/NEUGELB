@@ -2,6 +2,7 @@ package com.example.details_presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -46,55 +47,39 @@ fun DetailScreen(
         ) {
             if (state.isLoading) CircularProgressIndicator()
             if (state.error.trim().isNotEmpty()) Text(state.error)
-            state.detail?.let {
-                Details(it)
-            }
-
-            Row(
-                modifier = Modifier
-                    .padding(12.dp)
-                    .align(Alignment.TopStart),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                IconButton(
-                    onClick = {
-                        navHostController.popBackStack()
-                    }
+            Column {
+                Row(
+                    modifier = Modifier
+                        .padding(12.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(
-                        painter = painterResource(R.drawable.baseline_arrow_back_ios_24),
-                        contentDescription = stringResource(R.string.nav_back_icon)
+                    IconButton(
+                        onClick = {
+                            navHostController.popBackStack()
+                        }
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.baseline_arrow_back_ios_24),
+                            contentDescription = stringResource(R.string.nav_back_icon)
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(12.dp))
+
+                    Text(
+                        style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold),
+                        text = buildAnnotatedString {
+                            append(stringResource(R.string.details))
+                            withStyle(SpanStyle(color = Assent)) {
+                                append(stringResource(R.string.dot))
+                            }
+                        }
                     )
                 }
-                Spacer(modifier = Modifier.width(12.dp))
-
-                Text(
-                    style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold),
-                    text = buildAnnotatedString {
-                        append(stringResource(R.string.details))
-                        withStyle(SpanStyle(color = Assent)) {
-                            append(stringResource(R.string.dot))
-                        }
-                    }
-                )
+                state.detail?.let {
+                    Details(it)
+                }
             }
 
         }
     }
-}
-
-@Composable
-fun GradientBackground() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        Color.Transparent,
-                        MaterialTheme.colorScheme.onSurface
-                    )
-                )
-            )
-    )
 }

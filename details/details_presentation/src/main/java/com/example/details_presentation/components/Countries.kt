@@ -1,14 +1,11 @@
 package com.example.details_presentation.components
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,7 +30,6 @@ fun Countries(detail: Detail) {
             style = MaterialTheme.typography.bodySmall.copy(
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color.White
             )
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -49,7 +45,7 @@ fun Countries(detail: Detail) {
                         brush = Brush.verticalGradient(
                             colors = listOf(
                                 Color.Transparent,
-                                Color.Black
+                                MaterialTheme.colorScheme.onSurface
                             )
                         )
                     ),
@@ -58,7 +54,7 @@ fun Countries(detail: Detail) {
                 Text(
                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                     text = country?.name ?: "N/A",
-                    style = MaterialTheme.typography.titleSmall.copy(fontSize = 13.sp, color = Color.White),
+                    style = MaterialTheme.typography.titleSmall.copy(fontSize = 13.sp),
                     maxLines = 6,
                     overflow = TextOverflow.Ellipsis
                 )

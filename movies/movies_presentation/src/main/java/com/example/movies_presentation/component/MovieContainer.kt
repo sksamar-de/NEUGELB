@@ -9,13 +9,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -25,8 +29,7 @@ import com.example.common_utls.Constants
 import com.example.common_utls.LocalNavHostController
 import com.example.common_utls.NavigationRoute
 import com.example.movies_domain.model.Movie
-import com.gowtham.ratingbar.RatingBar
-import com.gowtham.ratingbar.RatingBarStyle
+import com.example.movies_presentation.R
 import java.text.DecimalFormat
 
 @Composable
@@ -40,7 +43,12 @@ fun MovieContainer(
             .fillMaxWidth()
             .padding(12.dp)
             .clickable {
-                navHostController.navigate(route = NavigationRoute.DetailScreen.route.replace("{id}", "${movie?.id}"))
+                navHostController.navigate(
+                    route = NavigationRoute.DetailScreen.route.replace(
+                        "{id}",
+                        "${movie?.id}"
+                    )
+                )
             }
     ) {
         Card(
@@ -73,22 +81,17 @@ fun MovieContainer(
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = DecimalFormat("#.##").format(movie?.vote_average) ?: "N/A",
-                    style = MaterialTheme.typography.titleMedium.copy(fontSize = 22.sp)
+                Icon(
+                    modifier = Modifier.size(24.dp),
+                    painter = painterResource(R.drawable.rating),
+                    contentDescription = stringResource(R.string.rating),
                 )
-                Spacer(modifier = Modifier.width(4.dp))
-                RatingBar(
-                    value = movie?.vote_average?.toFloat()?.div(2) ?: 0f,
-                    style = RatingBarStyle.Fill(),
-                    numOfStars = 5,
-                    size = 22.dp,
-                    spaceBetween = 0.dp,
-                    onValueChange = {
 
-                    },
-                    onRatingChanged = {
-                    }
+                Spacer(modifier = Modifier.width(8.dp))
+
+                Text(
+                    text = DecimalFormat("#.##").format(movie?.popularity) ?: "N/A",
+                    style = MaterialTheme.typography.titleMedium.copy(fontSize = 22.sp)
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
