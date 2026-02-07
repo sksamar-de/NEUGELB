@@ -34,6 +34,8 @@ android {
 
 dependencies {
     testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.androidx.junit)
 
     implementation(project(":common:common_utls"))

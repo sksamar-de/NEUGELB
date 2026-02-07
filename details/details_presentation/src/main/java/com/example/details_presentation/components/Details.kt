@@ -26,6 +26,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.example.common_utls.Constants
+import com.example.common_utls.formatDateWithSuffix
+import com.example.common_utls.formatLongToUsd
+import com.example.common_utls.formatMinutesToDuration
 import com.example.details_domain.model.Detail
 import com.example.details_presentation.R
 import com.gowtham.ratingbar.RatingBar
@@ -84,7 +87,7 @@ fun Details(detail: Detail) {
             )
 
             Text(
-                text = detail.release_date ?: "N/A",
+                text = formatDateWithSuffix(detail.release_date),
                 style = MaterialTheme.typography.titleLarge.copy(
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp,
@@ -98,7 +101,7 @@ fun Details(detail: Detail) {
             text = buildAnnotatedString {
                 detail.runtime?.let {
                     append("Runtime: ")
-                    append(" ${detail.runtime} Min")
+                    append(formatMinutesToDuration(detail.runtime))
                 }
             },
             style = MaterialTheme.typography.titleLarge.copy(
@@ -113,7 +116,7 @@ fun Details(detail: Detail) {
         Text(
             text = buildAnnotatedString {
                 append(stringResource(R.string.revenue))
-                append(" ${detail.revenue ?: "N/A"}")
+                append(formatLongToUsd(detail.revenue))
             },
             style = MaterialTheme.typography.titleLarge.copy(
                 fontWeight = FontWeight.Bold,
@@ -126,7 +129,7 @@ fun Details(detail: Detail) {
         Text(
             text = buildAnnotatedString {
                 append(stringResource(R.string.budget))
-                append(" ${detail.budget ?: "N/A"} ")
+                append(" ${formatLongToUsd(detail.budget)} ")
             },
             style = MaterialTheme.typography.titleLarge.copy(
                 fontWeight = FontWeight.Bold,

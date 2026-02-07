@@ -17,8 +17,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MovieViewModel @Inject constructor(private val useCase: GetMoviesUseCase) : ViewModel() {
-    var currentState by mutableStateOf(MoviesState())
-    val movies: SnapshotStateList<Movie?> = SnapshotStateList()
+    private var _currentState by mutableStateOf(MoviesState())
+    val currentState: MoviesState
+        get() = _currentState
+    private val _movies: SnapshotStateList<Movie?> = SnapshotStateList()
+    val movies: List<Movie?>
+        get() = _movies
 
     init {
         getAllMovies()
@@ -28,19 +32,19 @@ class MovieViewModel @Inject constructor(private val useCase: GetMoviesUseCase) 
         useCase.invoke(page = currentState.currentPage + 1).onEach {
             when (it) {
                 Resource.Loading -> {
-                    currentState = currentState.copy(isLoadingMore = true)
+                    _currentState = MoviesState(isLoadingMore = true)
                 }
 
                 is Resource.Success<Movies> -> {
-                    movies.addAll(it.result.results)
-                    currentState = MoviesState(
+                    _movies.addAll(it.result.results)
+                    _currentState = MoviesState(
                         currentPage = it.result.page?.toInt() ?: 0,
-                        totalPage = it.result.total_pages?.toInt() ?: 0
+                        totalPage = it.result.total_pages?.toInt() ?: 0,
                     )
                 }
 
                 is Resource.Error<*> -> {
-                    currentState = currentState.copy(error = it.message)
+                    _currentState = MoviesState(isLoadingMore = false, error = it.message)
                 }
             }
         }.launchIn(viewModelScope)
@@ -50,19 +54,20 @@ class MovieViewModel @Inject constructor(private val useCase: GetMoviesUseCase) 
         useCase.invoke(page = 1).onEach {
             when (it) {
                 Resource.Loading -> {
-                    currentState = MoviesState(isLoading = true)
+                    _currentState = MoviesState(isLoading = true)
                 }
 
                 is Resource.Success<Movies> -> {
-                    movies.addAll(it.result.results)
-                    currentState = MoviesState(
+                    _movies.clear()
+                    _movies.addAll(it.result.results)
+                    _currentState = MoviesState(
                         currentPage = it.result.page?.toInt() ?: 0,
-                        totalPage = it.result.total_pages?.toInt() ?: 0
+                        totalPage = it.result.total_pages?.toInt() ?: 0,
                     )
                 }
 
                 is Resource.Error<*> -> {
-                    currentState = MoviesState(error = it.message)
+                    _currentState = MoviesState(isLoading = false, error = it.message)
                 }
             }
         }.launchIn(viewModelScope)

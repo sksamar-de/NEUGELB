@@ -20,7 +20,9 @@ class DetailViewModel @Inject constructor(
     private val useCase: GetDetailUseCase
 ) : ViewModel() {
 
-    var state by mutableStateOf(DetailState())
+    private var _state by mutableStateOf(DetailState())
+    val state
+        get() = _state
 
     init {
         val id: Long? = handle["id"]
@@ -31,13 +33,13 @@ class DetailViewModel @Inject constructor(
         useCase.invoke(id = id).onEach {
             when(it){
                 Resource.Loading -> {
-                    state = DetailState(isLoading = true)
+                    _state = DetailState(isLoading = true)
                 }
                 is Resource.Success<Detail> -> {
-                    state = DetailState(detail = it.result)
+                    _state = DetailState(detail = it.result)
                 }
                 is Resource.Error<*> -> {
-                    state = DetailState(error = it.message)
+                    _state = DetailState(error = it.message)
                 }
             }
         }.launchIn(viewModelScope)
