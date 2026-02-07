@@ -1,8 +1,8 @@
 package com.example.movies_data.model
 
 data class MoviesResponse(
-    val page: Int?,
+    val page: Long?,
     val results: List<MovieDto?>?,
-    val total_pages: Int?,
-    val total_results: Int?
+    val total_pages: Long?,
+    val total_results: Long?
 )

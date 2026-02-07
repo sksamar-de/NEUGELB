@@ -2,13 +2,13 @@ package com.example.movies_domain.model
 
 
 data class Movies(
-    val page: Int?,
+    val page: Long?,
     val results: List<Movie?>,
-    val total_pages: Int?,
-    val total_results: Int?
+    val total_pages: Long?,
+    val total_results: Long?
 )
 data class Movie(
-    val id: Int?,
+    val id: Long?,
     val original_language: String?,
     val poster_path: String?,
     val backdrop_path: String?,

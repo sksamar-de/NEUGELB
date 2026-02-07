@@ -34,8 +34,8 @@ class MovieViewModel @Inject constructor(private val useCase: GetMoviesUseCase) 
                 is Resource.Success<Movies> -> {
                     movies.addAll(it.result.results)
                     currentState = MoviesState(
-                        currentPage = it.result.page ?: 0,
-                        totalPage = it.result.total_pages ?: 0
+                        currentPage = it.result.page?.toInt() ?: 0,
+                        totalPage = it.result.total_pages?.toInt() ?: 0
                     )
                 }
 
@@ -56,8 +56,8 @@ class MovieViewModel @Inject constructor(private val useCase: GetMoviesUseCase) 
                 is Resource.Success<Movies> -> {
                     movies.addAll(it.result.results)
                     currentState = MoviesState(
-                        currentPage = it.result.page ?: 0,
-                        totalPage = it.result.total_pages ?: 0
+                        currentPage = it.result.page?.toInt() ?: 0,
+                        totalPage = it.result.total_pages?.toInt() ?: 0
                     )
                 }
 

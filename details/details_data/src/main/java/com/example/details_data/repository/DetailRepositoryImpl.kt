@@ -7,7 +7,7 @@ import com.example.details_domain.repository.DetailRepository
 
 class DetailRepositoryImpl(private val api: DetailApi) : DetailRepository {
 
-    override suspend fun getDetail(id: Int): Detail {
+    override suspend fun getDetail(id: Long): Detail {
         return api.getDetail(id = id).toDetail()
     }
 

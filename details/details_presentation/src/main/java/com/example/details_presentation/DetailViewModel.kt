@@ -23,11 +23,11 @@ class DetailViewModel @Inject constructor(
     var state by mutableStateOf(DetailState())
 
     init {
-        val id: Int? = handle["id"]
+        val id: Long? = handle["id"]
         id?.let { getDetails(id) }
     }
 
-    private fun getDetails(id: Int) {
+    private fun getDetails(id: Long) {
         useCase.invoke(id = id).onEach {
             when(it){
                 Resource.Loading -> {

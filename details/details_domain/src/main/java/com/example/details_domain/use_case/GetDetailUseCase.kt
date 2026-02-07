@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.flow
 
 class GetDetailUseCase(private val repository: DetailRepository) {
 
-    fun invoke(id: Int): Flow<Resource<Detail>> = flow {
+    fun invoke(id: Long): Flow<Resource<Detail>> = flow {
         emit(Resource.Loading)
         try {
             val response = repository.getDetail(id = id)

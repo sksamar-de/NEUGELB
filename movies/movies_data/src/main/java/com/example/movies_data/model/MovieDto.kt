@@ -3,8 +3,8 @@ package com.example.movies_data.model
 data class MovieDto(
     val adult: Boolean?,
     val backdrop_path: String?,
-    val genre_ids: List<Int?>?,
-    val id: Int?,
+    val genre_ids: List<Long?>?,
+    val id: Long?,
     val original_language: String?,
     val original_title: String?,
     val overview: String?,
@@ -14,5 +14,5 @@ data class MovieDto(
     val title: String?,
     val video: Boolean?,
     val vote_average: Double?,
-    val vote_count: Int?
+    val vote_count: Long?
 )

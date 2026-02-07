@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
             }
             composable(
                 route = NavigationRoute.DetailScreen.route,
-                arguments = listOf(navArgument("id") { type = NavType.IntType })
+                arguments = listOf(navArgument("id") { type = NavType.LongType })
             ) {
                 DetailScreen()
             }

@@ -30,6 +30,7 @@ import com.example.common_utls.LocalNavHostController
 import com.example.details_presentation.components.Details
 
 val Assent = Color(0xFFFFC700)
+
 @Composable
 fun DetailScreen(
     viewModel: DetailViewModel = hiltViewModel()
@@ -50,7 +51,9 @@ fun DetailScreen(
             }
 
             Row(
-                modifier = Modifier.padding(12.dp).align(Alignment.TopStart),
+                modifier = Modifier
+                    .padding(12.dp)
+                    .align(Alignment.TopStart),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 IconButton(
@@ -69,7 +72,7 @@ fun DetailScreen(
                     style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold),
                     text = buildAnnotatedString {
                         append(stringResource(R.string.details))
-                        withStyle(SpanStyle(color = Assent)){
+                        withStyle(SpanStyle(color = Assent)) {
                             append(stringResource(R.string.dot))
                         }
                     }
