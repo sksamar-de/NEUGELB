@@ -19,6 +19,7 @@ fun MovieDto.toMovie(): Movie {
         id = id,
         original_language = original_language,
         title = title,
+        overview = overview,
         poster_path = poster_path,
         release_date = release_date,
         vote_average = vote_average,

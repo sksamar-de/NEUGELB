@@ -28,6 +28,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
@@ -66,6 +67,11 @@ dependencies {
     implementation(project(":movies:movies_data"))
     implementation(project(":movies:movies_domain"))
     implementation(project(":movies:movies_presentation"))
+
+    implementation(project(":details:details_data"))
+    implementation(project(":details:details_domain"))
+    implementation(project(":details:details_presentation"))
+
     implementation(project(":search:search_presentation"))
     implementation(project(":common:common_utls"))
 }

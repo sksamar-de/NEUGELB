@@ -1,8 +1,10 @@
 package com.example.movies_presentation
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,6 +22,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.example.movies_presentation.component.Header
+import com.example.movies_presentation.component.LoadingMore
+import com.example.movies_presentation.component.MovieContainer
 import com.example.movies_presentation.component.isScrolledToTheEnd
 
 @Composable
@@ -36,7 +41,7 @@ fun MoviesScreen(
     }
 
     LaunchedEffect(reachedBottom) {
-        if (reachedBottom && !state.isLoading && viewModel.movies.isNotEmpty()) {
+        if (reachedBottom && !state.isLoading && !state.isLoadingMore && viewModel.movies.isNotEmpty()) {
             viewModel.getNextMovies()
         }
     }
@@ -50,16 +55,28 @@ fun MoviesScreen(
         ) {
             if (state.isLoading) CircularProgressIndicator()
             if (state.error.trim().isNotEmpty()) Text(state.error)
-
-
             LazyColumn(
                 state = listState,
                 modifier = Modifier.fillMaxSize()
             ) {
+                item {
+                    Header()
+                }
+
                 items(viewModel.movies) {
-                    Text(modifier = Modifier
-                        .fillMaxWidth()
-                        .size(80.dp), text = it?.title?:"N/A")
+                    MovieContainer(movie = it)
+                }
+
+                item {
+                    Spacer(modifier = Modifier.height(20.dp))
+                }
+
+                item {
+                   if (state.isLoadingMore) LoadingMore()
+                }
+
+                item {
+                    Spacer(modifier = Modifier.height(20.dp))
                 }
             }
         }

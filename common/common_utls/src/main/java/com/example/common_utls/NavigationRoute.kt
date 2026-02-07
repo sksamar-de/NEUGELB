@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 
 sealed class NavigationRoute(val route: String, val name: String? = null, val id: Int? = null) {
     object MoviesScreen : NavigationRoute(route = "movies_screen")
+    object DetailScreen : NavigationRoute(route = "detail_screen/{id}")
     object SearchScreen : NavigationRoute(route = "search_screen")
 }
 

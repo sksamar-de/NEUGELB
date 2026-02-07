@@ -5,10 +5,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.example.common_utls.LocalNavHostController
 import com.example.common_utls.NavigationRoute
+import com.example.details_presentation.DetailScreen
 import com.example.movies_presentation.MoviesScreen
 import com.example.neugelb.root.Root
 import com.example.search_presentation.SearchScreen
@@ -35,6 +38,12 @@ class MainActivity : ComponentActivity() {
         ) {
             composable(route = NavigationRoute.MoviesScreen.route) {
                 MoviesScreen()
+            }
+            composable(
+                route = NavigationRoute.DetailScreen.route,
+                arguments = listOf(navArgument("id") { type = NavType.IntType })
+            ) {
+                DetailScreen()
             }
             composable(route = NavigationRoute.SearchScreen.route) {
                 SearchScreen()

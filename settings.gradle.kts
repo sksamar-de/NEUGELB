@@ -16,6 +16,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven { setUrl("https://jitpack.io") }
     }
 }
 
@@ -28,3 +29,6 @@ include(":search:search_data")
 include(":search:search_domain")
 include(":search:search_presentation")
 include(":common:common_utls")
+include(":details:details_data")
+include(":details:details_domain")
+include(":details:details_presentation")

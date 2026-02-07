@@ -57,6 +57,14 @@ dependencies {
     implementation(project(":common:common_utls"))
     implementation(project(":movies:movies_domain"))
 
+    //ratingbar
+    implementation(libs.compose.ratingbar)
+
+    // coil
+    implementation(libs.coil.compose)
+    // ADD THIS ONE:
+    implementation(libs.coil.network.okhttp)
+
     //hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
