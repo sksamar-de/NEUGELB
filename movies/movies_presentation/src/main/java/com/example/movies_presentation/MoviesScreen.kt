@@ -43,7 +43,7 @@ fun MoviesScreen(
 
                 items(
                     count = movies.itemCount,
-                    key = movies.itemKey { it.id ?: 0L },
+                    key = movies.itemKey { it.uniqueKey },
                     contentType = movies.itemContentType { "movie" }
                 ) { index ->
                     movies[index]?.let { movie ->
