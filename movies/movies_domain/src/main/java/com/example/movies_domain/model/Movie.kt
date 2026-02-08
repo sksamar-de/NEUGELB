@@ -1,4 +1,5 @@
 package com.example.movies_domain.model
+import java.util.UUID
 
 
 data class Movies(
@@ -8,6 +9,7 @@ data class Movies(
     val total_results: Long?
 )
 data class Movie(
+    val uniqueKey: Long = UUID.randomUUID().mostSignificantBits and Long.MAX_VALUE,
     val id: Long?,
     val original_language: String?,
     val poster_path: String?,
