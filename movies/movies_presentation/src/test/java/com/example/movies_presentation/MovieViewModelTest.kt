@@ -1,22 +1,21 @@
 package com.example.movies_presentation
 
-import com.example.common_utls.Resource
+import androidx.paging.PagingData
 import com.example.movies_domain.model.Movie
-import com.example.movies_domain.model.Movies
 import com.example.movies_domain.use_case.GetMoviesUseCase
+import app.cash.turbine.test
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
+import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
 
@@ -36,51 +35,46 @@ class MovieViewModelTest {
     }
 
     @Test
-    fun `initialization updates state to Loading`() = runTest {
-        every { useCase.invoke(1) } returns flow { emit(Resource.Loading) }
+    fun `movies flow emits PagingData when use case returns data`() = runTest {
+        val testMovie = Movie(id = 1L, original_language = "en", poster_path = "/poster", backdrop_path = "/backdrop", release_date = "2021", title = "Title", overview = "Overview", vote_average = 8.0, popularity = 1.0)
+        every { useCase.invoke() } returns flowOf(PagingData.from(listOf(testMovie)))
         val viewModel = MovieViewModel(useCase)
-        assertTrue(viewModel.currentState.isLoading)
+        viewModel.movies.test {
+            val pagingData = awaitItem()
+            assertNotNull(pagingData)
+            cancelAndIgnoreRemainingEvents()
+        }
     }
 
     @Test
-    fun `getAllMovies updates state to Success`() = runTest {
-        val movies = Movies(1L, listOf(Movie(1L, "en", "/poster", "/backdrop", "2021", "Title", "Overview", 8.0, 1.0)), 1L, 1L)
-        every { useCase.invoke(1) } returns flow {
-            emit(Resource.Loading)
-            emit(Resource.Success(movies))
-        }
+    fun `useCase invoke is called when movies flow is collected`() = runTest {
+        every { useCase.invoke() } returns flowOf(PagingData.from(emptyList<Movie>()))
         val viewModel = MovieViewModel(useCase)
-        assertFalse(viewModel.currentState.isLoading)
-        assertEquals(1, viewModel.movies.size)
-        assertEquals(1, viewModel.currentState.currentPage)
+        viewModel.movies.test {
+            awaitItem()
+            cancelAndIgnoreRemainingEvents()
+        }
+        verify(exactly = 1) { useCase.invoke() }
     }
 
     @Test
-    fun `getNextMovies updates state`() = runTest {
-        val initialMovies = Movies(1L, listOf(Movie(1L, "en", "poster", "backdrop", "2021", "Title", "Overview", 8.0, 1.0)), 10L, 2L)
-        every { useCase.invoke(1) } returns flow { emit(Resource.Success(initialMovies)) }
+    fun `movies flow emits from use case and is cached`() = runTest {
+        val movies = listOf(
+            Movie(id = 1L, original_language = "en", poster_path = "/poster", backdrop_path = "/backdrop", release_date = "2021", title = "Title 1", overview = "Overview 1", vote_average = 8.0, popularity = 1.0),
+            Movie(id = 2L, original_language = "en", poster_path = "/poster2", backdrop_path = "/backdrop2", release_date = "2021", title = "Title 2", overview = "Overview 2", vote_average = 7.0, popularity = 2.0)
+        )
+        every { useCase.invoke() } returns flowOf(PagingData.from(movies))
         val viewModel = MovieViewModel(useCase)
-        assertEquals(1, viewModel.movies.size)
-        val nextMovies = Movies(2L, listOf(Movie(2L, "en", "/poster2", "/backdrop2", "2021", "Title 2", "Overview", 8.0, 1.0)), 10L, 2L)
-        every { useCase.invoke(2) } returns flow {
-            emit(Resource.Loading)
-            emit(Resource.Success(nextMovies))
+        viewModel.movies.test {
+            val first = awaitItem()
+            assertNotNull(first)
+            cancelAndIgnoreRemainingEvents()
         }
-        viewModel.getNextMovies()
-        assertFalse(viewModel.currentState.isLoadingMore)
-        assertEquals(2, viewModel.movies.size)
-        assertEquals(2, viewModel.currentState.currentPage)
-    }
-
-    @Test
-    fun `getAllMovies updates state to Error`() = runTest {
-        val errorMessage = "Error message"
-        every { useCase.invoke(1) } returns flow {
-            emit(Resource.Loading)
-            emit(Resource.Error(errorMessage))
+        viewModel.movies.test {
+            val cached = awaitItem()
+            assertNotNull(cached)
+            cancelAndIgnoreRemainingEvents()
         }
-        val viewModel = MovieViewModel(useCase)
-        assertFalse(viewModel.currentState.isLoading)
-        assertEquals(errorMessage, viewModel.currentState.error)
+        verify(exactly = 1) { useCase.invoke() }
     }
 }
