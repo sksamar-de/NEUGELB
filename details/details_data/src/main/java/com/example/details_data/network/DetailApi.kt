@@ -5,6 +5,6 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface DetailApi {
-    @GET("/3/movie/{id}")
+    @GET("movie/{id}")
     suspend fun getDetail(@Path("id") id: Long): DetailResponse
 }
