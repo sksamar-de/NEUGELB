@@ -1,5 +1,4 @@
 *.iml
-.idea
 .kotlin
 .gradle
 /local.properties
