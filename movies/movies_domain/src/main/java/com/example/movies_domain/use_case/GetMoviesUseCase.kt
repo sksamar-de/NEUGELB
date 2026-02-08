@@ -1,22 +1,21 @@
 package com.example.movies_domain.use_case
 
-import com.example.common_utls.Resource
-import com.example.movies_domain.model.Movies
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import com.example.movies_domain.model.Movie
+import com.example.movies_domain.pagination.MoviesPagingSource
 import com.example.movies_domain.repository.MoviesRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import java.io.IOException
 
 class GetMoviesUseCase(private val repository: MoviesRepository) {
 
-    operator fun invoke(page: Int): Flow<Resource<Movies>> = flow {
-        emit(Resource.Loading)
-        try {
-            val result = repository.getMovies(page = page)
-            emit(Resource.Success(result))
-        } catch (e: Exception){
-            emit(Resource.Error(message = e.localizedMessage ?: "Some Error"))
-        }
+    operator fun invoke(): Flow<PagingData<Movie>> {
+        return Pager(
+            config = PagingConfig(pageSize = 20, prefetchDistance = 2),
+            pagingSourceFactory = {
+                MoviesPagingSource(repository)
+            }
+        ).flow
     }
-
 }

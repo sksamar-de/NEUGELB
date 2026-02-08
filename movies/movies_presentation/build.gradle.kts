@@ -56,6 +56,9 @@ dependencies {
     implementation(project(":common:common_utls"))
     implementation(project(":movies:movies_domain"))
 
+    implementation(libs.androidx.paging.compose)
+    implementation(libs.androidx.paging.runtime.ktx)
+
     // coil
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
