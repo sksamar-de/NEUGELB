@@ -1,83 +1,70 @@
 package com.example.movies_presentation
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.paging.LoadState
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemContentType
+import androidx.paging.compose.itemKey
 import com.example.movies_presentation.component.Header
 import com.example.movies_presentation.component.LoadingMore
 import com.example.movies_presentation.component.MovieContainer
-import com.example.movies_presentation.component.isScrolledToTheEnd
 
 @Composable
 fun MoviesScreen(
     viewModel: MovieViewModel = hiltViewModel()
 ) {
-    val state = viewModel.currentState
-    val listState = rememberLazyListState()
-
-    val reachedBottom by remember {
-        derivedStateOf {
-            listState.isScrolledToTheEnd()
-        }
-    }
-
-    LaunchedEffect(reachedBottom) {
-        if (reachedBottom && !state.isLoading && !state.isLoadingMore && viewModel.movies.isNotEmpty()) {
-            viewModel.getNextMovies()
-        }
-    }
-
-    Scaffold {
+    val movies = viewModel.movies.collectAsLazyPagingItems()
+    Scaffold { padding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(it),
+                .padding(padding),
             contentAlignment = Alignment.Center
         ) {
-            if (state.isLoading) CircularProgressIndicator()
-            if (state.error.trim().isNotEmpty()) Text(state.error)
             LazyColumn(
-                state = listState,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(bottom = 20.dp)
             ) {
                 item {
                     Header()
                 }
 
-                items(viewModel.movies) {
-                    MovieContainer(movie = it)
+                items(
+                    count = movies.itemCount,
+                    key = movies.itemKey { it.id ?: 0L },
+                    contentType = movies.itemContentType { "movie" }
+                ) { index ->
+                    movies[index]?.let { movie ->
+                        MovieContainer(movie = movie)
+                    }
                 }
 
                 item {
-                    Spacer(modifier = Modifier.height(20.dp))
+                    if (movies.loadState.append is LoadState.Loading) LoadingMore()
                 }
+            }
 
-                item {
-                   if (state.isLoadingMore) LoadingMore()
-                }
+            if (movies.loadState.refresh is LoadState.Loading) CircularProgressIndicator()
 
-                item {
-                    Spacer(modifier = Modifier.height(20.dp))
-                }
+            val errorState = movies.loadState.append as? LoadState.Error ?: movies.loadState.refresh as? LoadState.Error
+
+            errorState?.let {
+                Text(
+                    text = it.error.localizedMessage ?: "Some Error",
+                    modifier = Modifier.padding(16.dp)
+                )
             }
         }
     }
