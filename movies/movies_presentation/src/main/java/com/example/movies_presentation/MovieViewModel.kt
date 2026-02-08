@@ -29,23 +29,21 @@ class MovieViewModel @Inject constructor(private val useCase: GetMoviesUseCase) 
     }
 
     fun getNextMovies() {
-        val oldState = _currentState.copy()
         useCase.invoke(page = currentState.currentPage + 1).onEach {
             when (it) {
                 Resource.Loading -> {
-                    _currentState = MoviesState(isLoadingMore = true)
+                    _currentState = _currentState.copy(isLoadingMore = true)
                 }
-
                 is Resource.Success<Movies> -> {
                     _movies.addAll(it.result.results)
-                    _currentState = MoviesState(
+                    _currentState = _currentState.copy(
+                        isLoadingMore = false,
                         currentPage = it.result.page?.toInt() ?: 0,
                         totalPage = it.result.total_pages?.toInt() ?: 0,
                     )
                 }
-
                 is Resource.Error -> {
-                    _currentState = oldState.copy(isLoadingMore = false, error = it.message)
+                    _currentState = _currentState.copy(isLoadingMore = false, error = it.message)
                 }
             }
         }.launchIn(viewModelScope)
@@ -55,20 +53,19 @@ class MovieViewModel @Inject constructor(private val useCase: GetMoviesUseCase) 
         useCase.invoke(page = 1).onEach {
             when (it) {
                 Resource.Loading -> {
-                    _currentState = MoviesState(isLoading = true)
+                    _currentState = _currentState.copy(isLoading = true)
                 }
-
                 is Resource.Success<Movies> -> {
                     _movies.clear()
                     _movies.addAll(it.result.results)
-                    _currentState = MoviesState(
+                    _currentState = _currentState.copy(
+                        isLoading = false,
                         currentPage = it.result.page?.toInt() ?: 0,
                         totalPage = it.result.total_pages?.toInt() ?: 0,
                     )
                 }
-
                 is Resource.Error -> {
-                    _currentState = MoviesState(isLoading = false, error = it.message)
+                    _currentState = _currentState.copy(isLoading = false, error = it.message)
                 }
             }
         }.launchIn(viewModelScope)
