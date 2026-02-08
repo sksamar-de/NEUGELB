@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -38,7 +39,9 @@ import java.text.DecimalFormat
 @Composable
 fun Details(detail: Detail) {
     Column(
-        modifier = Modifier.verticalScroll(rememberScrollState()).padding(18.dp)
+        modifier = Modifier
+            .verticalScroll(rememberScrollState())
+            .padding(18.dp)
     ) {
 
         Row(
@@ -79,6 +82,7 @@ fun Details(detail: Detail) {
 
         Column {
             Text(
+                modifier = Modifier.testTag(stringResource(R.string.movie_title)),
                 text = detail.title ?: "N/A",
                 style = MaterialTheme.typography.titleLarge.copy(
                     fontWeight = FontWeight.Bold,

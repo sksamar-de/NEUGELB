@@ -8,6 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.example.common_utls.LocalNavHostController
 import com.example.common_utls.NavigationRoute
@@ -28,7 +29,7 @@ fun AutoCompleteMovie(
                         "${movie?.id}"
                     )
                 )
-            }
+            }.testTag("movie_name")
     ) {
         Text(
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 18.dp),
